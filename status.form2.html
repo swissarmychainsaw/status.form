@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GNS Status → HTML Generator (Designer v2)</title>
+<style>
+  :root{
+    --font: Inter, Arial, Helvetica, sans-serif;
+    --text:#111; --muted:#555; --bg:#ffffff; --card:#ffffff; --border:#dcdcdc; --soft:#f7f7f7;
+    --accent:#086dd7; --green:#27c08a; --yellow:#f4c542; --red:#e5534b;
+  }
+  body{margin:0;font-family:var(--font);color:var(--text);background:var(--bg);line-height:1.45}
+  .wrap{max-width:1200px;margin:0 auto;padding:20px}
+  h1{margin:0 0 8px;font-size:22px}
+  h2{margin:16px 0 8px;font-size:18px;border-bottom:1px solid var(--border);padding-bottom:6px}
+  .grid{display:grid;grid-template-columns:420px 1fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px}
+  label{display:block;font-weight:600;margin:10px 0 6px}
+  input, select, textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;font-size:14px;background:#fff}
+  textarea{min-height:96px}
+  .btn{border:1px solid var(--border);background:#111;color:#fff;border-radius:10px;padding:8px 12px;font-size:14px;cursor:pointer}
+  .btn.secondary{background:#fff;color:#111}
+  .toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+  .preview{border:1px dashed var(--border);background:#fff;border-radius:12px;padding:10px;min-height:200px}
+  .summary-table{width:100%;border-collapse:collapse;margin:8px 0 16px}
+  .summary-table th,.summary-table td{border:1px solid var(--border);padding:12px 14px;vertical-align:top}
+  .summary-table th{background:var(--soft);font-weight:700;text-align:center;white-space:nowrap}
+  .center{text-align:center}
+  .name-cell{font-weight:700;text-align:center}
+  .pill{display:inline-block;padding:6px 12px;border-radius:10px;font-weight:700;color:#fff}
+  .pill.green{background:var(--green)}
+  .pill.yellow{background:var(--yellow);color:#111}
+  .pill.red{background:var(--red)}
+  #updates{border:1px solid var(--border);border-radius:10px;min-height:120px;padding:8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>GNS Weekly Status → HTML Generator (Designer v2)</h1>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Content</h2>
+      <label>Program Summary</label>
+      <textarea id="programSummary"></textarea>
+
+      <label>Last Status</label>
+      <select id="lastStatus"><option>Green</option><option>Yellow</option><option>Red</option></select>
+      <label>Current Status</label>
+      <select id="currentStatus"><option>Green</option><option>Yellow</option><option>Red</option></select>
+      <label>Trending</label>
+      <select id="trending"><option>Green</option><option>Yellow</option><option>Red</option></select>
+      <label>As of (date)</label>
+      <input type="date" id="asOf" />
+
+      <label>TPM</label>
+      <input type="text" id="tpm" />
+      <label>Engineering DRI</label>
+      <input type="text" id="engDri" />
+      <label>Business Sponsor</label>
+      <input type="text" id="bizSponsor" />
+      <label>Engineering Sponsor</label>
+      <input type="text" id="engSponsor" />
+
+      <label>Executive Summary</label>
+      <textarea id="execSummary"></textarea>
+
+      <label>Lowlights (one per line)</label>
+      <textarea id="lowlights"></textarea>
+
+      <label>Updates (paste tables or rich text)</label>
+      <div id="updates" contenteditable="true"></div>
+
+      <div style="margin-top:12px">
+        <button class="btn" id="genBtn">Generate</button>
+        <button class="btn secondary" id="copyBtn">Copy HTML</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Preview</h2>
+      <div id="preview" class="preview"></div>
+      <h2>Generated HTML</h2>
+      <textarea id="output" style="min-height:220px"></textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+function escapeHtml(str){return String(str??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function safeInline(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;(\/)?(b|i|u)&gt;/g,'<$1$2>');}
+function nlToParas(text){const parts=String(text??'').split(/\n\s*\n/).map(s=>s.trim()).filter(Boolean);return parts.map(p=>`<p>${safeInline(p).replace(/\n/g,'<br>')}</p>`).join('\n');}
+function linesToList(text){const items=String(text??'').split(/\n/).map(s=>s.trim()).filter(Boolean);return items.length?`<ul>\n${items.map(i=>`<li>${safeInline(i)}</li>`).join('\n')}\n</ul>`:'';}
+function pill(val){const v=(val||'').toLowerCase();if(v==='red')return'<span class="pill red">Red</span>';if(v==='yellow')return'<span class="pill yellow">Yellow</span>';return'<span class="pill green">Green</span>';}
+
+function generatedStyles(){
+  return `<style>
+    :root{ --font: Inter, Arial, Helvetica, sans-serif; --text:#111; --border:#dcdcdc; --soft:#f7f7f7; --green:#27c08a; --yellow:#f4c542; --red:#e5534b; }
+    body{font-family:var(--font);color:var(--text);line-height:1.45}
+    h2{margin:16px 0 8px;font-size:18px;border-bottom:1px solid var(--border);padding-bottom:6px}
+    .summary-table{width:100%;border-collapse:collapse;margin:8px 0 16px}
+    .summary-table th,.summary-table td{border:1px solid var(--border);padding:12px 14px;vertical-align:top}
+    .summary-table th{background:var(--soft);font-weight:700;text-align:center;white-space:nowrap}
+    .center{text-align:center}
+    .name-cell{font-weight:700;text-align:center}
+    .pill{display:inline-block;padding:6px 12px;border-radius:10px;font-weight:700;color:#fff}
+    .pill.green{background:var(--green)}
+    .pill.yellow{background:var(--yellow);color:#111}
+    .pill.red{background:var(--red)}
+    p{margin:8px 0}
+    ul{margin:8px 0 8px 20px}
+    table{border-spacing:0;border-collapse:collapse}
+  </style>`;
+}
+
+function buildHtml(data){
+  const asOf = data.asOf? new Date(data.asOf).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'';
+  const updatesBlock = data.updates && data.updates.trim() ? `<h2>Updates</h2>${data.updates}` : '';
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/>${generatedStyles()}<title>Status</title></head><body>
+  <table class="summary-table"><tr><th>Program Summary</th><td>${nlToParas(data.programSummary)}</td></tr></table>
+  <table class="summary-table"><tr><th>Last Status</th><th>Current Status</th><th>Trending</th><th>Date</th></tr>
+    <tr><td class="center">${pill(data.lastStatus)}</td><td class="center">${pill(data.currentStatus)}</td><td class="center">${pill(data.trending)}</td><td class="center">${escapeHtml(asOf)}</td></tr></table>
+  <table class="summary-table"><tr><th>TPM</th><th>Engineering DRI</th><th>Business Sponsor</th><th>Engineering Sponsor</th></tr>
+    <tr><td class="name-cell">${escapeHtml(data.tpm)}</td><td class="name-cell">${escapeHtml(data.engDri)}</td><td class="name-cell">${escapeHtml(data.bizSponsor)}</td><td class="name-cell">${escapeHtml(data.engSponsor)}</td></tr></table>
+  ${data.execSummary?`<h2>Executive Summary</h2>${nlToParas(data.execSummary)}`:''}
+  ${data.lowlights?`<h2>Lowlights</h2>${linesToList(data.lowlights)}`:''}
+  ${updatesBlock}
+  </body></html>`;
+}):'';
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>Status</title></head><body>
+  <table class="summary-table"><tr><th>Program Summary</th><td>${nlToParas(data.programSummary)}</td></tr></table>
+  <table class="summary-table"><tr><th>Last Status</th><th>Current Status</th><th>Trending</th><th>Date</th></tr>
+    <tr><td class="center">${pill(data.lastStatus)}</td><td class="center">${pill(data.currentStatus)}</td><td class="center">${pill(data.trending)}</td><td class="center">${escapeHtml(asOf)}</td></tr></table>
+  <table class="summary-table"><tr><th>TPM</th><th>Engineering DRI</th><th>Business Sponsor</th><th>Engineering Sponsor</th></tr>
+    <tr><td class="name-cell">${escapeHtml(data.tpm)}</td><td class="name-cell">${escapeHtml(data.engDri)}</td><td class="name-cell">${escapeHtml(data.bizSponsor)}</td><td class="name-cell">${escapeHtml(data.engSponsor)}</td></tr></table>
+  ${data.execSummary?`<h2>Executive Summary</h2>${nlToParas(data.execSummary)}`:''}
+  ${data.lowlights?`<h2>Lowlights</h2>${linesToList(data.lowlights)}`:''}
+  ${data.updates?`<h2>Updates</h2>${data.updates}`:''}
+  </body></html>`;
+}
+
+function generate(){
+  const data={programSummary:$("programSummary").value,lastStatus:$("lastStatus").value,currentStatus:$("currentStatus").value,trending:$("trending").value,asOf:$("asOf").value,tpm:$("tpm").value,engDri:$("engDri").value,bizSponsor:$("bizSponsor").value,engSponsor:$("engSponsor").value,execSummary:$("execSummary").value,lowlights:$("lowlights").value,updates:$("updates").innerHTML};
+  const html=buildHtml(data);
+  $("output").value=html;
+  $("preview").innerHTML=html;
+}
+
+$("genBtn").addEventListener('click',generate);
+$("copyBtn").addEventListener('click',()=>{if(!$("output").value)generate();navigator.clipboard.writeText($("output").value);});
+
+// Initial render
+generate();
+</script>
+</body>
+</html>
+

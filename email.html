@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no" />
+    <title>GNS Weekly Status</title>
+    <style>
+      /* Basic email-safe styles */
+      body { margin:0; padding:0; background:#f5f7fb; }
+      .wrapper { width:100%; background:#f5f7fb; }
+      .container {
+        width:100%; max-width:760px; margin:0 auto; background:#ffffff;
+        font-family: Arial, Helvetica, sans-serif; color:#111111;
+      }
+      .px { padding-left:24px; padding-right:24px; }
+      .section { padding:24px; }
+      .muted { color:#555555; }
+      h1, h2, h3 { margin:0 0 12px 0; line-height:1.25; }
+      h1 { font-size:20px; }
+      h2 { font-size:16px; border-bottom:1px solid #e6e6e6; padding-bottom:8px; }
+      h3 { font-size:14px; margin-top:16px; }
+      p { margin:8px 0; line-height:1.5; }
+      ul { margin:8px 0 0 20px; padding:0; }
+      li { margin:6px 0; }
+      .card {
+        border:1px solid #e6e6e6; background:#ffffff; border-radius:8px;
+      }
+      .grid-2 { width:100%; border-collapse:collapse; }
+      .grid-2 td { vertical-align:top; padding:8px 0; }
+      .kv { width:100%; border-collapse:collapse; font-size:13px; }
+      .kv td { padding:8px 12px; border:1px solid #e6e6e6; }
+      .kv td.label { width:180px; background:#fafafa; font-weight:bold; }
+      .badges { display:inline-block; }
+      .badge {
+        display:inline-block; font-size:12px; line-height:1; padding:6px 10px; margin-right:8px;
+        border-radius:999px; border:1px solid #2fa36c; background:#e9f8f0; color:#185a3c;
+      }
+      .pill {
+        display:inline-block; font-size:12px; padding:4px 8px; border-radius:999px;
+        border:1px solid #e0e0e0; background:#fafafa; color:#333333;
+      }
+      .role-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+      .role-table th, .role-table td { border:1px solid #e6e6e6; padding:8px 12px; text-align:left; }
+      .role-table th { background:#fafafa; }
+      .risk-table { width:100%; border-collapse:collapse; font-size:13px; }
+      .risk-table th, .risk-table td { border:1px solid #e6e6e6; padding:8px 12px; text-align:left; vertical-align:top; }
+      .risk-table th { background:#fafafa; }
+      .spacer { height:16px; line-height:16px; }
+      .hdr { padding:20px 24px; background:#0b5fcd; color:#ffffff; }
+      .hdr h1 { color:#ffffff; }
+      .foot { font-size:12px; color:#777; padding:16px 24px 24px; }
+      @media (max-width:600px) {
+        .px { padding-left:16px; padding-right:16px; }
+        .section { padding:16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container card" style="margin-top:20px;">
+        <!-- Header -->
+        <div class="hdr">
+          <h1>Program Summary – Global Network Services (GNS)</h1>
+          <div class="muted">Designs, builds, and operates LinkedIn’s enterprise network across on-prem and cloud; drives procurement, deployment, operations, automation, and integration.</div>
+        </div>
+
+        <!-- Status Row -->
+        <div class="section px">
+          <table class="kv" role="presentation" cellspacing="0" cellpadding="0">
+            <tr>
+              <td class="label">Last Status</td>
+              <td><span class="badge">Green</span></td>
+            </tr>
+            <tr>
+              <td class="label">Current Status</td>
+              <td><span class="badge">Green</span></td>
+            </tr>
+            <tr>
+              <td class="label">Trending</td>
+              <td><span class="badge">Green</span></td>
+            </tr>
+          </table>
+
+          <h2 style="margin-top:20px;">Program Roles</h2>
+          <table class="role-table" role="presentation" cellspacing="0" cellpadding="0">
+            <tr>
+              <th>Role</th>
+              <th>Owner</th>
+            </tr>
+            <tr>
+              <td>TPM</td>
+              <td>Nick Adams</td>
+            </tr>
+            <tr>
+              <td>Engineering DRI</td>
+              <td>Antony Alexander Christie</td>
+            </tr>
+            <tr>
+              <td>Business Sponsor</td>
+              <td>Niha Mathur</td>
+            </tr>
+            <tr>
+              <td>Engineering Sponsor</td>
+              <td>Suchreet Dhaliwal</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="section px">
+          <h2>Executive Summary</h2>
+          <ul>
+            <li>IPv6 advanced with the team’s Linux VM–based NAT66 solution, unblocking Internet access after vendor delays; firewalls and interfaces are configured, with full connectivity testing scheduled this sprint in West Europe.</li>
+            <li>Regional firewall enhancements completed with rule cloning in SEA production and China, improving consistency.</li>
+            <li>OBN migration progressed with 69 of 181 VNets moved this quarter; pausing further work to enable OBN integration in Euclid.</li>
+            <li>Automation advanced: agentic platform work continues and AI observability is production-ready.</li>
+            <li>Azure regional expansion: Firewall rule cloning completed in South Asia, enabling further rollouts.</li>
+            <li>Infrastructure: Paris and Munich office network build-outs progressing; circuit ordering initiated for Virginia data centers.</li>
+            <li>Security: VPN upgrade pilot testing succeeded at all sites except Singapore; troubleshooting underway.</li>
+          </ul>
+
+          <h3>Lowlights</h3>
+          <ul>
+            <li>Remaining OBN migrations paused for three weeks pending Euclid API delivery to address redeployment issues.</li>
+            <li>Reachability gaps identified from SEA test spoke to select LVA1 prefixes require remediation.</li>
+          </ul>
+        </div>
+
+        <!-- Updates -->
+        <div class="section px">
+          <h2>Updates</h2>
+
+          <!-- Network Security -->
+          <h3>Network Security <span class="pill">Team: @Ramakant Komali · @Cyrus Rahimi · @Antony Alexander Christie</span></h3>
+          <p><strong>Summary</strong></p>
+          <p class="muted">Weekly updates below.</p>
+          <ul>
+            <li><strong>Device ID wired:</strong> Phase 2 enforcement completed across all Dublin office floors (full site coverage). Q4 portal KBs complete. Next: schedule partner sessions and begin Phase 3 MAC-based auth device testing.</li>
+            <li><strong>Azure PAN NVA rule &amp; object optimizations:</strong> Alignment achieved on zone picker issues; agreement to resolve Azure→Internet logic. Next: share finalized logic this week.</li>
+            <li><strong>User ID-Based Internet Access Enforcement:</strong> Kerberos SSO testing still failing; joint IAM working session in progress.</li>
+            <li><strong>Palo Alto firewall upgrades in Azure (11.1.x):</strong> 68% complete. Next: continue rollout.</li>
+            <li><strong>Modernizing remote access – No VPN:</strong> Reviewed InfoSec RFC. Next: incorporate feedback and define implementation plan.</li>
+            <li><strong>Remote Access (VPN &amp; VDI) enhancements:</strong> GlobalProtect pilot successful except Singapore gateway; troubleshooting ongoing.</li>
+            <li><strong>Security zone improvements:</strong> Migration planning to consolidate zones underway this sprint. Next: finalize approach and prep execution.</li>
+            <li><strong>Azure firewall POC:</strong> On hold until Azure supports IPv6.</li>
+          </ul>
+
+          <!-- Wireless -->
+          <h3>Wireless <span class="pill">Team: @Mikhail Natapov · @Saravanan Eagambaram</span></h3>
+          <p><strong>Summary</strong></p>
+          <p class="muted">Weekly updates below.</p>
+          <ul>
+            <li><strong>Outdoor Wireless:</strong> Survey for 96 APs reviewed. Next: fine-tuning for 80 APs.</li>
+            <li><strong>UXI Sensor Deployment:</strong> 9/15 installations (60%). DCTech: 8/12 (75%). Biz: 1/3 (33.3%). Beijing, LCA1, LOR1 (3 offices), and LVA1 (4 offices) completed.</li>
+            <li><strong>Datacenter Wireless Refresh:</strong> DC ops team quoting install work. Next: installations in Oregon and Texas DCs.</li>
+            <li><strong>Wireless Refresh (2025–2026):</strong> Shanghai – Predictive survey reviewed, APs purchased, awaiting install quote. Beijing – Install quote pending. San Francisco – Zip submitted for installation.</li>
+          </ul>
+
+          <!-- Azure Cloud Infrastructure -->
+          <h3>Azure Cloud Infrastructure <span class="pill">Team: @Jabri Bembry · @Monty Zhang</span></h3>
+          <p><strong>Summary</strong></p>
+          <p class="muted">Weekly updates below.</p>
+          <ul>
+            <li><strong>IPv6 in Azure – Network:</strong> Linux VM strategy for NAT66 Internet access in progress. AXRT deployment in WEU proceeding; firewalls configured for IPv6 Internet interfaces. WEU completion &amp; full IPv6 connectivity testing planned this sprint.</li>
+            <li><strong>OBN Migration:</strong> 69/181 VNets migrated this quarter; pause for three weeks to build Euclid OBN integrations.</li>
+            <li><strong>Azure Regional Expansion:</strong> Central India GNS infrastructure completed.</li>
+            <li><strong>Azure Reloaded:</strong> Firewall rule cloning completed for SEA lnkdprod and China. Found two issues: (1) reachability gap SEA test spoke → certain LVA1 prefixes; (2) metric tuning needed on routing protocol for WEU↔SEA path optimization.</li>
+            <li><strong>Azure Acceleration connections POC:</strong> Moved to Q3, pending IPv6 support.</li>
+          </ul>
+
+          <!-- Infrastructure Deployments & Buildouts -->
+          <h3>Infrastructure Deployments &amp; Buildouts <span class="pill">Team: @Saravanan Eagambaram · @Lukesh Jeevanandam · @David Zimmerman · @Mohammad Omid Karimy</span></h3>
+          <p><strong>Summary</strong></p>
+          <p class="muted">Weekly updates below.</p>
+          <ul>
+            <li><strong>DCTech Offices/Suites Build-Out:</strong> LORE Flex Office, LTX1 Suite-G Office, LTX1-v910 Offices completed.</li>
+            <li><strong>Virginia Data Centers:</strong> Circuit orders in progress; expected completion by mid-September. New patch panels required in CVA2; CoreSite working on it. Initial installation will proceed using existing equipment once panels are ready.</li>
+            <li><strong>Site Build-Out &amp; Decom (MOK):</strong> TACACS configured on Berlin, Kuala Lumpur, and Shenzhen Fortigates, enabling Network Team access. Next: extend to remaining sites.</li>
+            <li><strong>Brownoute Reroute:</strong> Explored Cursor to generate SRv6 addressing frameworks/configs. Next: review outputs and validate applicability.</li>
+          </ul>
+
+          <!-- LAN/WAN Architecture -->
+          <h3>LAN/WAN Architecture <span class="pill">Team: @Saravanan Eagambaram · @Lukesh Jeevanandam</span></h3>
+          <p><strong>Summary</strong></p>
+          <p class="muted">Weekly updates below.</p>
+          <ul>
+            <li><strong>Office Core Routers Hardware refresh – EOL:</strong> LOM3 scheduled this sprint. Remaining after completion: LSNR/S, LMVC/D, LCP1.</li>
+            <li><strong>Fortinet – SD-WAN POC:</strong> Pending IBE hardware order.</li>
+            <li><strong>NPW Revolutions:</strong> No new updates. Pending Airtel secondary Azure circuit delivery.</li>
+            <li><strong>CTE Network Redesign:</strong> New IDF/MDF rack layout finalized. Tentative corporate network cutover in October.</li>
+            <li><strong>LTX1 Network Refresh:</strong> External routers ordered. No further updates until mid-Q2.</li>
+          </ul>
+
+          <!-- Automation -->
+          <h3>Automation <span class="pill">Team: @Bwv Watrapvenkatachalam · @Praneeth TSS · @VELMURUGAN DHANDAPANI · @Vidyashree Baligar</span></h3>
+          <p><strong>Summary</strong></p>
+          <p class="muted">Weekly updates below.</p>
+          <ul>
+            <li><strong>AI-based observability &amp; Chaos Engineering:</strong> OIDC flow Okta auth done. Next: implement RBAC.</li>
+            <li><strong>ACL Automation Enhancements at Scale:</strong> Initial SME discussions complete; actions assigned. Next: follow-up call to continue zone picker discussion.</li>
+            <li><strong>GNSA Network Automation Enhancements Requests:</strong> Working on NACL automation fixes.</li>
+            <li><strong>GNS Automation Ad-hoc Requests:</strong> Investigating <em>gns-biznet-api</em> corporate 404 issue and policy violation. Next: continue debugging and resolution.</li>
+          </ul>
+        </div>
+
+        <!-- Risks -->
+        <div class="section px">
+          <h2>Risks</h2>
+          <table class="risk-table" role="presentation" cellspacing="0" cellpadding="0">
+            <tr>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Date Identified</th>
+              <th>Status</th>
+              <th>Impact</th>
+              <th>Owner</th>
+              <th>Mitigation Plan</th>
+            </tr>
+            <tr>
+              <td>Risk</td>
+              <td>The Azure Firewall POC has been paused due to lack of IPv6 support.</td>
+              <td>2025-05-20</td>
+              <td>Open</td>
+              <td>Low</td>
+              <td>Antony</td>
+              <td>None</td>
+            </tr>
+            <tr>
+              <td>Risk</td>
+              <td>IPv6 Internet access in Azure was blocked due to Palo Alto limitations, requiring temporary NAT66 workarounds.</td>
+              <td>2025-04-20</td>
+              <td>Closed</td>
+              <td>High (delays)</td>
+              <td>Ramakant</td>
+              <td>Complete</td>
+            </tr>
+            <tr>
+              <td>Risk</td>
+              <td>Pause may impact quarterly targets if API work slips.</td>
+              <td>2025-08-21</td>
+              <td>Open</td>
+              <td>Low</td>
+              <td>Monty</td>
+              <td>Pending</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="foot">
+          If you have questions or need more detail, reply to this email.
+        </div>
+      </div>
+      <div class="spacer"></div>
+    </div>
+  </body>
+</html>
+
